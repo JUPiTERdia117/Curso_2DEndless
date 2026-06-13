@@ -64,7 +64,7 @@ public class Player_Controller : MonoBehaviour
 
                 Debug.Log("Salto Normal");
 
-                animator.SetTrigger("jump");
+                //animator.SetTrigger("jump");
             }
             
         }
@@ -78,7 +78,7 @@ public class Player_Controller : MonoBehaviour
 
     IEnumerator Crouch(){
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
 
         Debug.Log("Preparado para gran salto");
 
@@ -91,14 +91,17 @@ public class Player_Controller : MonoBehaviour
         
       
        
-
+        Debug.Log("Game Over");
+        Debug.Log(other.gameObject.tag);
         if(other.gameObject.tag == "Obstacle"){
             
 
-            Debug.Log("Game Over");
+
+
+            
 
             GM gameManager = FindObjectOfType<GM>();
-            //gameManager.gameOver = true;
+            gameManager.gameOver = true;
             
         }
 

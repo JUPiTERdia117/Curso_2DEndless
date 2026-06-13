@@ -545,7 +545,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189703084}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -599,7 +599,7 @@ Transform:
   m_GameObject: {fileID: 1189703084}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 20, z: 1}
+  m_LocalScale: {x: 0.25, y: 30, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -644,8 +644,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundPrefabs:
-  - {fileID: 6971619525762392177, guid: ae1a40b3a546842699cb616f8d25cfe8, type: 3}
-  - {fileID: 3023872909031783881, guid: 39a1f150d59e846e5a50ef585efd0084, type: 3}
+  - {fileID: 8884872483792327379, guid: 00d2aa6d04a8248489cfc00f509372c5, type: 3}
+  - {fileID: 8523477102451373391, guid: 91eaad7fc64ca4ee7936fe5e248a296f, type: 3}
+  - {fileID: 2545466682046904006, guid: 7e5cb5acb9d694e6596f92c7dd9e11a7, type: 3}
+  - {fileID: 3186811460835483058, guid: 8ffb638fbb9b5457da0370d2127a1723, type: 3}
 --- !u!1 &1561718644 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1204873157963673226, guid: 51c13e036f18a436cad4efbcbf61f867, type: 3}
@@ -708,6 +710,10 @@ PrefabInstance:
     - target: {fileID: 6971619525762392177, guid: ae1a40b3a546842699cb616f8d25cfe8, type: 3}
       propertyPath: m_Name
       value: Terreno_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 6971619525762392177, guid: ae1a40b3a546842699cb616f8d25cfe8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6971619525762392179, guid: ae1a40b3a546842699cb616f8d25cfe8, type: 3}
       propertyPath: m_RootOrder
@@ -1020,6 +1026,10 @@ PrefabInstance:
     - target: {fileID: 1204873157963673222, guid: 51c13e036f18a436cad4efbcbf61f867, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1204873157963673223, guid: 51c13e036f18a436cad4efbcbf61f867, type: 3}
+      propertyPath: speedIncrement
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 1204873157963673223, guid: 51c13e036f18a436cad4efbcbf61f867, type: 3}
       propertyPath: cameraTransform
