@@ -39,33 +39,20 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKeyDown(KeyCode.Space) == true && inGround == true){
+     
 
-            StartCoroutine("Crouch");
-            
-        }
+         if(Input.GetKeyDown(KeyCode.Space) == true && inGround == true){
 
-         if(Input.GetKeyUp(KeyCode.Space) == true && inGround == true){
-
-            StopCoroutine("Crouch");
+           
 
 
             inGround = false;
 
-            if(greatJump == true){
-                rb.AddForce(Vector2.up * fuerzaSalto*1.5f, ForceMode2D.Impulse);
-                Debug.Log("Gran Salto");
+            rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
+                
 
-                animator.SetTrigger("release");
+            animator.SetTrigger("release");
 
-                greatJump = false;
-            }else{
-                rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
-
-                Debug.Log("Salto Normal");
-
-                //animator.SetTrigger("jump");
-            }
             
         }
 
@@ -76,28 +63,14 @@ public class Player_Controller : MonoBehaviour
         
     }
 
-    IEnumerator Crouch(){
 
-        yield return new WaitForSeconds(1.0f);
-
-        Debug.Log("Preparado para gran salto");
-
-        animator.SetTrigger("crouch");
-
-        greatJump = true;
-    }
 
     void OnTriggerEnter2D(Collider2D other){
         
       
        
-        Debug.Log("Game Over");
-        Debug.Log(other.gameObject.tag);
+
         if(other.gameObject.tag == "Obstacle"){
-            
-
-
-
             
 
             GM gameManager = FindObjectOfType<GM>();
@@ -107,7 +80,7 @@ public class Player_Controller : MonoBehaviour
 
      
     }
-
+    
     void OnCollisionEnter2D(Collision2D other){
 
         
@@ -116,11 +89,7 @@ public class Player_Controller : MonoBehaviour
         inGround = true;
         if(other.gameObject.tag == "Piso"){
             
-            if(firstLanding == true){
-                firstLanding = false;
-                return;
-            }
-            Debug.Log("Aterrizaje");    
+           Debug.Log("Tocaste el piso");
             animator.SetTrigger("landing");
           
 
