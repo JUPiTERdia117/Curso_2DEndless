@@ -13,7 +13,7 @@ public class Player_Controller : MonoBehaviour
 
     public Transform cameraTransform;
 
-    private bool inGround, greatJump = false, firstLanding = true;
+    private bool inGround, greatJump = false, firstLanding = true, dead = false;
 
     private Animator animator;
 
@@ -38,6 +38,9 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(dead == true){
+            return;
+        }
 
      
 
@@ -59,32 +62,27 @@ public class Player_Controller : MonoBehaviour
         transform.position += transform.right * speed * Time.deltaTime;
         cameraTransform.position += transform.right * speed * Time.deltaTime;
 
-        speed += speedIncrement* Time.deltaTime;
+        if(speed < 15f){
+            speed += speedIncrement* Time.deltaTime;
+        }
+        
         
     }
 
 
 
-    void OnTriggerEnter2D(Collider2D other){
-        
-      
-       
+  
+    void OnCollisionEnter2D(Collision2D other){
 
+        
         if(other.gameObject.tag == "Obstacle"){
-            
+            dead = true;
+            animator.SetTrigger("dead");
 
             GM gameManager = FindObjectOfType<GM>();
             gameManager.gameOver = true;
             
         }
-
-     
-    }
-    
-    void OnCollisionEnter2D(Collision2D other){
-
-        
-
         
         inGround = true;
         if(other.gameObject.tag == "Piso"){
