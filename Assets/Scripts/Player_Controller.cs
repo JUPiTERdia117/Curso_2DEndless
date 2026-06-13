@@ -11,7 +11,11 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] private float fuerzaSalto = 1f;
 
-    private bool inGround = false;
+    public Transform cameraTransform;
+
+    private bool inGround, greatJump = false, firstLanding = true;
+
+    private Animator animator;
 
 
 
@@ -21,6 +25,7 @@ public class Player_Controller : MonoBehaviour
     void Awake(){
 
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
 
@@ -34,41 +39,92 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
 
-        if(transform.position.y > 1.005f){
-            inGround = false;
-            
-        }else{
-            inGround = true;
-        }
-
         if(Input.GetKeyDown(KeyCode.Space) == true && inGround == true){
 
-            rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
-
+            StartCoroutine("Crouch");
             
         }
 
-        
+         if(Input.GetKeyUp(KeyCode.Space) == true && inGround == true){
+
+            StopCoroutine("Crouch");
+
+
+            inGround = false;
+
+            if(greatJump == true){
+                rb.AddForce(Vector2.up * fuerzaSalto*1.5f, ForceMode2D.Impulse);
+                Debug.Log("Gran Salto");
+
+                animator.SetTrigger("release");
+
+                greatJump = false;
+            }else{
+                rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
+
+                Debug.Log("Salto Normal");
+
+                animator.SetTrigger("jump");
+            }
+            
+        }
 
         transform.position += transform.right * speed * Time.deltaTime;
+        cameraTransform.position += transform.right * speed * Time.deltaTime;
 
         speed += speedIncrement* Time.deltaTime;
         
     }
 
+    IEnumerator Crouch(){
+
+        yield return new WaitForSeconds(1.5f);
+
+        Debug.Log("Preparado para gran salto");
+
+        animator.SetTrigger("crouch");
+
+        greatJump = true;
+    }
+
     void OnTriggerEnter2D(Collider2D other){
+        
+      
        
 
         if(other.gameObject.tag == "Obstacle"){
-            inGround = true;
+            
 
             Debug.Log("Game Over");
 
             GM gameManager = FindObjectOfType<GM>();
-            gameManager.gameOver = true;
+            //gameManager.gameOver = true;
             
         }
 
+     
+    }
+
+    void OnCollisionEnter2D(Collision2D other){
+
+        
+
+        
+        inGround = true;
+        if(other.gameObject.tag == "Piso"){
+            
+            if(firstLanding == true){
+                firstLanding = false;
+                return;
+            }
+            Debug.Log("Aterrizaje");    
+            animator.SetTrigger("landing");
+          
+
+            
+        }
+       
+        
      
     }
 
