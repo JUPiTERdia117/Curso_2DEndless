@@ -11,7 +11,11 @@ public class Player_Controller : MonoBehaviour
 
     [SerializeField] private float fuerzaSalto = 1f;
 
+
+
     public Transform cameraTransform;
+
+    public GM gameManager;
 
     private bool inGround,  dead = false, isCrouching = false;
 
@@ -39,6 +43,7 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         if(dead == true){
+            
             return;
         }
 
@@ -100,7 +105,7 @@ public class Player_Controller : MonoBehaviour
         transform.position += transform.right * speed * Time.deltaTime;
         cameraTransform.position += new Vector3(1f, 0f, 0f) * speed * Time.deltaTime;
 
-        if(speed < 16f){
+        if(speed < 15f){
             speed += speedIncrement* Time.deltaTime;
         }
         
@@ -118,9 +123,10 @@ public class Player_Controller : MonoBehaviour
         if(other.gameObject.tag == "Obstacle"){
             //rb.constraints = RigidbodyConstraints2D.r;
             dead = true;
+  
             animator.SetTrigger("dead");
 
-            GM gameManager = FindObjectOfType<GM>();
+            
             gameManager.gameOver = true;
             
         }

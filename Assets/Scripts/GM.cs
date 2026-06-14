@@ -11,8 +11,17 @@ public class GM : MonoBehaviour
 
     public GameObject gameOverPanel;
 
-    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI scoreText, highScoreText;
 
+    [SerializeField] private AudioClip gameoverSound;
+    [SerializeField] private AudioClip music;
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] GameObject[] goToDisableOnGameOver;
+
+    private int highScore = 0, score = 0;
+
+    bool endGame = false;
     private GameObject player;
 
     int scoreOffset = 0;
@@ -20,6 +29,10 @@ public class GM : MonoBehaviour
     void Awake(){
         player = FindObjectOfType<Player_Controller>().gameObject;
         scoreOffset = (int)player.transform.position.x;
+        audioSource.clip = music;
+        audioSource.Play();
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
 
     }
 
@@ -33,14 +46,58 @@ public class GM : MonoBehaviour
     void Update()
     {
         if(gameOver == true){
-            gameOverPanel.SetActive(true);
-        }else{
-            scoreText.text = "" + (int)(player.transform.position.x - scoreOffset);
+            if(!endGame){ // Evita que se ejecute varias veces
+
+                EndGame();
+                
+            }
+            return;
         }
+        
+            
+       
+            
+        score = (int)(player.transform.position.x - scoreOffset);
+        scoreText.text = "" + score;
+        
+        
+        
         
     }
 
+    void EndGame(){
+
+        foreach(GameObject go in goToDisableOnGameOver){
+            go.SetActive(false);
+        }
+
+        if(score > highScore){
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+        }
+
+        highScoreText.text = "High Score: " + highScore;
+
+        audioSource.Stop();
+        audioSource.loop = false;
+
+        audioSource.clip = gameoverSound;
+        audioSource.Play();
+        gameOverPanel.SetActive(true);
+        endGame = true;
+    }
+
     public void Restart(){
-        Application.LoadLevel(Application.loadedLevel);
+       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void Pause(){
+        Time.timeScale = 0f;
+        
+    }
+
+    public void Resume(){
+        Time.timeScale = 1f;
+        
     }
 }
