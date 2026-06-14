@@ -8,7 +8,7 @@ public class Generator : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other){
 
-        transform.position = new Vector2(transform.position.x + 20, transform.position.y);
+        transform.position = new Vector3(transform.position.x + 20, transform.position.y, transform.position.z);
 
         // Crea una instancia del objeto a partir de la prefab en la posición del objeto vacío
 

@@ -62,7 +62,7 @@ public class Player_Controller : MonoBehaviour
         transform.position += transform.right * speed * Time.deltaTime;
         cameraTransform.position += transform.right * speed * Time.deltaTime;
 
-        if(speed < 15f){
+        if(speed < 16f){
             speed += speedIncrement* Time.deltaTime;
         }
         

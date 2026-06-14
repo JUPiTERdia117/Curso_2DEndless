@@ -34,8 +34,10 @@ public class GM : MonoBehaviour
     {
         if(gameOver == true){
             gameOverPanel.SetActive(true);
+        }else{
+            scoreText.text = "" + (int)(player.transform.position.x - scoreOffset);
         }
-        scoreText.text = "" + (int)(player.transform.position.x - scoreOffset);
+        
     }
 
     public void Restart(){
