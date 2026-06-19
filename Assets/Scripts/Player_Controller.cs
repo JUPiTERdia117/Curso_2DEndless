@@ -5,31 +5,31 @@ using UnityEngine;
 public class Player_Controller : MonoBehaviour
 {
 
-    [SerializeField] private float speed = 1f;
+    [SerializeField] private float speed = 1f; // velocidad del jugador
 
-    [SerializeField] private float speedIncrement = 0.01f;
+    [SerializeField] private float speedIncrement = 0.01f; //aceleracion del jugador
 
-    [SerializeField] private float fuerzaSalto = 1f;
-
-
-
-    public Transform cameraTransform;
-
-    public GM gameManager;
-
-    private bool inGround,  dead = false, isCrouching = false;
-
-    private Animator animator;
+    [SerializeField] private float fuerzaSalto = 1f; //fuerza del salto del jugador
 
 
 
-    private Rigidbody2D rb;
+    public Transform cameraTransform; //referencia al transform de la camara
+
+    public GM gameManager; //referecnia al game manager
+
+    private bool inGround,  dead = false, isCrouching = false; //booleanos que detectan piso, si el jugador está muerto y si está agachado
+
+    private Animator animator; //variable de animador
+
+
+
+    private Rigidbody2D rb; //variable de rigidbody2d
 
    
     void Awake(){
 
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>(); //obtiene el componente rigidbody2d del jugador
+        animator = GetComponent<Animator>(); //obtiene el componente animator del jugador
     }
 
 
@@ -42,22 +42,23 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(dead == true){
+        if(dead == true){ // si está muerto ya no hagas el resto
             
-            return;
+            return;//evita que se ejecute todo lo demás
         }
 
      
-
+        //si el jugador está en el piso y no está agachado entonces puede brincar con espacio
          if(Input.GetKeyDown(KeyCode.Space) == true && inGround == true && isCrouching == false){
 
            
-
+            
             Debug.Log("Salto");
             inGround = false;
 
-            rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
-                
+            rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);//empuja hacia arriba
+            
+            //setea animación de brincar
             animator.SetBool("still", false);
             animator.SetBool("crouch", false);
             animator.SetBool("jump", true);
@@ -66,6 +67,7 @@ public class Player_Controller : MonoBehaviour
             
         }
 
+        //si el jugador está en el piso y no está agachado entonces puede agacharse con flecha hacia abajo
         if(Input.GetKeyDown(KeyCode.DownArrow) == true && inGround == true && isCrouching == false){
 
             isCrouching = true;
@@ -74,7 +76,7 @@ public class Player_Controller : MonoBehaviour
             
 
             
-                
+            //setea animación de "agacharse"
             animator.SetBool("still", false);
             animator.SetBool("jump", false);
             animator.SetBool("rejoin", false);
@@ -84,6 +86,7 @@ public class Player_Controller : MonoBehaviour
             
         }
 
+        //si el jugador está en el piso y está agachado entonces puede volver al estado base si deja de presionar la flecha hacia abajo
         if(Input.GetKeyUp(KeyCode.DownArrow) == true && inGround == true && isCrouching == true){
 
             isCrouching = false;
@@ -92,7 +95,7 @@ public class Player_Controller : MonoBehaviour
             
 
             
-                
+            //setea animación de "volver a estado base"
             animator.SetBool("still", false);
             animator.SetBool("jump", false);
             animator.SetBool("crouch", false);
@@ -102,9 +105,13 @@ public class Player_Controller : MonoBehaviour
             
         }
 
+
+        //mueven el jugador y la cámara
         transform.position += transform.right * speed * Time.deltaTime;
         cameraTransform.position += new Vector3(1f, 0f, 0f) * speed * Time.deltaTime;
 
+
+        //incremente velocidad con el tiempo y le pone un límite 
         if(speed < 15f){
             speed += speedIncrement* Time.deltaTime;
         }
@@ -114,14 +121,17 @@ public class Player_Controller : MonoBehaviour
 
 
 
-  
+
+
+    //Detecta colisiones 
     void OnCollisionEnter2D(Collision2D other){
 
         Debug.Log("Colisionaste con " + other.gameObject.name);
 
         
+        //Si choca con obstaculo muere
         if(other.gameObject.tag == "Obstacle"){
-            //rb.constraints = RigidbodyConstraints2D.r;
+            
             dead = true;
   
             animator.SetTrigger("dead");
@@ -131,14 +141,18 @@ public class Player_Controller : MonoBehaviour
             
         }
         
-        
+        //Si choca con piso
         if(other.gameObject.tag == "Piso"){
             
            Debug.Log("Tocaste el piso");
+
+           //Setea animación de "aterrizaje"
            animator.SetBool("jump", false);
            animator.SetBool("crouch", false);
            animator.SetBool("still", true);
-           inGround = true;
+
+
+           inGround = true; //deja que vuelva a saltar
            
 
             
