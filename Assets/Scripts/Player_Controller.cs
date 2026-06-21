@@ -78,8 +78,6 @@ public class Player_Controller : MonoBehaviour
             
             //setea animación de "agacharse"
             animator.SetBool("still", false);
-            animator.SetBool("jump", false);
-            animator.SetBool("rejoin", false);
             animator.SetBool("crouch", true);
 
 
@@ -96,8 +94,6 @@ public class Player_Controller : MonoBehaviour
 
             
             //setea animación de "volver a estado base"
-            animator.SetBool("still", false);
-            animator.SetBool("jump", false);
             animator.SetBool("crouch", false);
             animator.SetBool("rejoin", true);
 
@@ -148,7 +144,6 @@ public class Player_Controller : MonoBehaviour
 
            //Setea animación de "aterrizaje"
            animator.SetBool("jump", false);
-           animator.SetBool("crouch", false);
            animator.SetBool("still", true);
 
 
